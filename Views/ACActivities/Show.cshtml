@@ -1,0 +1,46 @@
+@model ACActivity
+
+@{
+	var participants = (IEnumerable<Join>)@Model.Participants;
+	<h1>@Model.Title</h1>
+
+	@if(@ViewBag.CurrUserId != null && @ViewBag.ActivityCreator.UserId == @ViewBag.CurrUserId){
+		<form action="/activities/@Model.ACActivityId/delete">
+			<input type="submit" value="Delete" />
+		</form>
+	}
+
+	<h3>Event Coordinator: @ViewBag.ActivityCreator.Name</h3>
+
+	<h3>Description: @Model.Description</h3>
+
+	<h4>Participants:</h4>
+
+
+	@if(@ViewBag.CurrUserId != null && @ViewBag.ActivityCreator.UserId != @ViewBag.CurrUserId){
+		@if(participants.Any(r => r.UserId == @ViewBag.CurrUserId))
+		{
+			<td>
+				<form action="/activities/@Model.ACActivityId/leave">
+					<input type="submit" value="Leave" />
+				</form>
+			</td>					
+		}
+		else 
+		{
+			<td>
+				<form action="/activities/@Model.ACActivityId/join">
+					<input type="submit" value="Join" />
+				</form>
+			</td>
+		}
+	}
+
+
+	<ul>
+	@foreach(var participant in @Model.Participants)
+	{
+		<li>@participant.User.Name</li>
+	}
+	</ul>
+}

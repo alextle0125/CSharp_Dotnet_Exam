@@ -1,0 +1,64 @@
+@using ActivityCenter.Models;
+
+<h1>Dojo Activity Center</h1>
+
+<table class="table">
+	<thead class="thead-dark">
+		<tr>
+			<th>Activity</th>
+			<th>Date and Time</th>
+			<th>Duration</th>
+			<th>Event Coordinator</th>
+			<th>No. of Participants</th>
+			<th>Actions</th>
+		</tr>
+	</thead>
+	<tbody>
+		@if(@ViewBag.AllACActivities.Count > 0)
+		{
+			@foreach(var activity in @ViewBag.AllACActivities)
+			{
+				var participants = (IEnumerable<Join>)@activity.Participants;
+				<tr>
+					<td><a href="/activities/@activity.ACActivityId">@activity.Title</a></td>
+					<td>@activity.Date</td>
+					<td>@activity.Duration</td>
+					<td>@activity.User.Name</td>
+					@if(@activity.Participants.Count > 0)
+					{
+						<td>@activity.Participants.Count</td>
+					}
+					else
+					{
+						<td>0</td>
+					}
+					@if(@activity.UserId == @ViewBag.CurrUserId)
+					{
+						<td>
+							<form action="/activities/@activity.ACActivityId/delete">
+	    						<input type="submit" value="Delete" />
+							</form>
+						</td>
+					}
+					else if(participants.Any(r => r.UserId == @ViewBag.CurrUserId))
+					{
+						<td>
+							<form action="/activities/@activity.ACActivityId/leave">
+	    						<input type="submit" value="Leave" />
+							</form>
+						</td>					
+					}
+					else 
+					{
+						<td>
+							<form action="/activities/@activity.ACActivityId/join">
+	    						<input type="submit" value="Join" />
+							</form>
+						</td>
+					}
+				</tr>
+			}	
+		}
+	</tbody>
+</table>
+<a href="/activities/new">Add New Activity</a>

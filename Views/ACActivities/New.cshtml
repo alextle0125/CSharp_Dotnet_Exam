@@ -1,0 +1,39 @@
+<h1>Create an Activity</h1>
+
+@model ACActivity
+<form asp-action="AddActivity" asp-controller="ACActivities" method="post">
+    <span asp-validation-for="Title"></span>
+    <label asp-for="Title">Title</label>
+    <input asp-for="Title">
+
+    <br>
+
+    <span asp-validation-for="Date"></span>
+    <label asp-for="Date">Date</label>
+    <input asp-for="Date">
+
+    <br>
+
+    <label for="Duration">Duration</label>
+
+    <select name="DurationNum">
+      @for(var i = 1; i <= 100; i++)
+      {
+        <option value="@i">@i</option>
+      }
+    </select>
+
+    <select name="DurationOption">
+        <option value="minutes">Minutes</option>
+        <option value="hours">Hours</option>
+        <option value="days">Days</option>
+    </select>
+
+    <span asp-validation-for="Description"></span>
+    <label asp-for="Description">Description</label>
+    <textarea asp-for="Description"></textarea>
+
+   	<br>
+    
+    <input value="Create Activity" type="submit">    
+</form>
